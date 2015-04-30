@@ -5,7 +5,9 @@
  */
 package org.foi.nwtis.thop.web.zrna;
 
+import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import javax.faces.bean.ManagedBean;
@@ -18,25 +20,29 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean
 @SessionScoped
-public class Lokalizacija {
+public class Lokalizacija implements Serializable {
 
-    private static final Map<String,Object> jezici;
+    private static Map<String, Object> jezici;
+
+    public Map<String, Object> getJezici() {
+        return jezici;
+    }
     private String odabraniJezik;
     private Locale vazecaLokalizacija;
-    
-    static{
+
+    static {
         jezici = new HashMap<>();
         jezici.put("Hrvatski", new Locale("hr"));
         jezici.put("English", Locale.ENGLISH);
         jezici.put("Deutsch", Locale.GERMAN);
     }
-            
+
     /**
      * Creates a new instance of Lokalizacija
      */
     public Lokalizacija() {
-        vazecaLokalizacija = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-        odabraniJezik = vazecaLokalizacija.getLanguage();
+//        vazecaLokalizacija = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+//        odabraniJezik = vazecaLokalizacija.getLanguage();
     }
 
     public String getOdabraniJezik() {
@@ -55,5 +61,17 @@ public class Lokalizacija {
         this.vazecaLokalizacija = vazecaLokalizacija;
     }
     
-    
+    public Object odaberiJezik() {
+        Iterator i = jezici.keySet().iterator();
+        while(i.hasNext()) {
+            String kljuc = (String) i.next();
+            Locale l = (Locale) jezici.get(kljuc);
+            if(odabraniJezik.equals(l.getLanguage())) {
+                FacesContext.getCurrentInstance().getViewRoot().setLocale(l);
+                vazecaLokalizacija = l;
+                return "OK";
+            }
+        }
+        return "ERROR";
+    }
 }

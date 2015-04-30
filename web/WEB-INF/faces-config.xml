@@ -14,4 +14,30 @@
             <var>m</var>                
         </resource-bundle>
     </application>
+    <navigation-rule>
+        <from-view-id>/index.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>#{lokalizacija.odaberiJezik}</from-action>
+            <from-outcome>OK</from-outcome>
+            <to-view-id>/emailPostavke.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-action>#{lokalizacija.odaberiJezik}</from-action>
+            <from-outcome>ERROR</from-outcome>
+            <to-view-id>/index.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/emailPostavke.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>#{emailPovezivanje.saljiPoruku()}</from-action>
+            <from-outcome>OK</from-outcome>
+            <to-view-id>/slanjePoruke.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-action>#{emailPovezivanje.citajPoruku()}</from-action>
+            <from-outcome>OK</from-outcome>
+            <to-view-id>/pregledSvihPoruka.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
 </faces-config>
